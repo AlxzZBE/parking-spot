@@ -1,0 +1,12 @@
+services:
+  db:
+    image: postgres
+    container_name: parkingcontrol
+    environment:
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql
+volumes:
+  data:
