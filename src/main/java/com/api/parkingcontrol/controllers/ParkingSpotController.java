@@ -56,7 +56,7 @@ public class ParkingSpotController {
 
     @GetMapping
     ResponseEntity<Page<ParkingSpotGet>> findAllPageable(Pageable pageable) {
-        return ResponseEntity.ok(parkingSpotService.findAllPageable(pageable));
+        return ResponseEntity.ok(parkingSpotService.findAllPageable(pageable).map(ParkingSpotGet::new));
     }
 
     @DeleteMapping(params = "id")

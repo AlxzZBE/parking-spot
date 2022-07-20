@@ -13,7 +13,7 @@ public interface ParkingSpotService {
     UUID save(ParkingSpot parkingSpot);
     ParkingSpot findByIdOrThrowNotFoundException(UUID id);
     ParkingSpot findByParkingSpotNumberOrThrowNotFoundException(String parkingSpotNumber);
-    Page<ParkingSpotGet> findAllPageable(Pageable pageable);
+    Page<ParkingSpot> findAllPageable(Pageable pageable);
     void addCarInTheParkingSpotByLicensePlate(String parkingSpotNumber, String licensePlate);
     void deleteById(UUID id);
     void removeCarFromParkingSpotByParkingSpotNumber(String parkingSpotNumber);

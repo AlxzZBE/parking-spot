@@ -84,8 +84,8 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     }
 
     @Override
-    public Page<ParkingSpotGet> findAllPageable(Pageable pageable) {
-        return parkingSpotRepository.findAll(pageable).map(ParkingSpotGet::new);
+    public Page<ParkingSpot> findAllPageable(Pageable pageable) {
+        return parkingSpotRepository.findAll(pageable);
     }
 
     @Override
