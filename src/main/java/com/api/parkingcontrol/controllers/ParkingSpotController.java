@@ -36,6 +36,12 @@ public class ParkingSpotController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping(params = "parkingSpotNumber")
+    public ResponseEntity<Void> removeCarFromParkingSpotByParkingSpotNumber(@RequestParam String parkingSpotNumber) {
+        parkingSpotService.removeCarFromParkingSpotByParkingSpotNumber(parkingSpotNumber);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping(params = "id")
     public ResponseEntity<ParkingSpotGet> findById(@RequestParam UUID id) {
         return ResponseEntity.ok(new ParkingSpotGet(parkingSpotService.findByIdOrThrowNotFoundException(id)));

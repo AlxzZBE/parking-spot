@@ -74,4 +74,16 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
         possibleParkingSpot.getCar().setParkingSpot(null);
         parkingSpotRepository.deleteById(id);
     }
+
+    @Override
+    @Transactional
+    public void removeCarFromParkingSpotByParkingSpotNumber(String parkingSpotNumber) {
+        ParkingSpot possibleParkingSpot = findByParkingSpotNumberOrThrowNotFoundException(parkingSpotNumber);
+        if (possibleParkingSpot.getCar() != null) {
+            possibleParkingSpot.getCar().setParkingSpot(null);
+            possibleParkingSpot.setCar(null);
+            possibleParkingSpot.setAvailable(true);
+            parkingSpotRepository.save(possibleParkingSpot);
+        }
+    }
 }
