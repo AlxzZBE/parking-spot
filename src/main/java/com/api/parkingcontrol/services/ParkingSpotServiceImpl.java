@@ -5,7 +5,10 @@ import com.api.parkingcontrol.domain.ParkingSpot;
 import com.api.parkingcontrol.exceptions.AlreadyExistsException;
 import com.api.parkingcontrol.exceptions.NotFoundException;
 import com.api.parkingcontrol.repositories.ParkingSpotRepository;
+import com.api.parkingcontrol.requests.ParkingSpotGet;
 import com.api.parkingcontrol.requests.ParkingSpotPostRequestBody;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -37,18 +40,6 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     }
 
     @Override
-    public ParkingSpot findByIdOrThrowNotFoundException(UUID id) {
-        return parkingSpotRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Not Found ParkingSpot with Id `%s`".formatted(id)));
-    }
-
-    @Override
-    public ParkingSpot findByParkingSpotNumberOrThrowNotFoundException(String parkingSpotNumber) {
-        return parkingSpotRepository.findByParkingSpotNumber(parkingSpotNumber)
-                .orElseThrow(() -> new NotFoundException("Not Found ParkingSpot with parkingSpotNumber `%s`".formatted(parkingSpotNumber)));
-    }
-
-    @Override
     @Transactional
     public void addCarInTheParkingSpotByLicensePlate(String parkingSpotNumber, String licensePlate) {
         ParkingSpot possibleParkingSpot = findByParkingSpotNumberOrThrowNotFoundException(parkingSpotNumber);
@@ -70,14 +61,6 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
 
     @Override
     @Transactional
-    public void deleteById(UUID id) {
-        ParkingSpot possibleParkingSpot = findByIdOrThrowNotFoundException(id);
-        possibleParkingSpot.getCar().setParkingSpot(null);
-        parkingSpotRepository.deleteById(id);
-    }
-
-    @Override
-    @Transactional
     public void removeCarFromParkingSpotByParkingSpotNumber(String parkingSpotNumber) {
         ParkingSpot possibleParkingSpot = findByParkingSpotNumberOrThrowNotFoundException(parkingSpotNumber);
         if (possibleParkingSpot.getCar() != null) {
@@ -86,6 +69,31 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
             possibleParkingSpot.setAvailable(true);
             parkingSpotRepository.save(possibleParkingSpot);
         }
+    }
+
+    @Override
+    public ParkingSpot findByIdOrThrowNotFoundException(UUID id) {
+        return parkingSpotRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Not Found ParkingSpot with Id `%s`".formatted(id)));
+    }
+
+    @Override
+    public ParkingSpot findByParkingSpotNumberOrThrowNotFoundException(String parkingSpotNumber) {
+        return parkingSpotRepository.findByParkingSpotNumber(parkingSpotNumber)
+                .orElseThrow(() -> new NotFoundException("Not Found ParkingSpot with parkingSpotNumber `%s`".formatted(parkingSpotNumber)));
+    }
+
+    @Override
+    public Page<ParkingSpotGet> findAllPageable(Pageable pageable) {
+        return parkingSpotRepository.findAll(pageable).map(ParkingSpotGet::new);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(UUID id) {
+        ParkingSpot possibleParkingSpot = findByIdOrThrowNotFoundException(id);
+        possibleParkingSpot.getCar().setParkingSpot(null);
+        parkingSpotRepository.deleteById(id);
     }
 
     @Override

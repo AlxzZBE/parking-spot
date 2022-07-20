@@ -3,6 +3,8 @@ package com.api.parkingcontrol.controllers;
 import com.api.parkingcontrol.requests.ParkingSpotGet;
 import com.api.parkingcontrol.requests.ParkingSpotPostRequestBody;
 import com.api.parkingcontrol.services.ParkingSpotService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,13 +45,18 @@ public class ParkingSpotController {
     }
 
     @GetMapping(params = "id")
-    public ResponseEntity<ParkingSpotGet> findById(@RequestParam UUID id) {
+    public ResponseEntity<ParkingSpotGet> findByIdOrThrowNotFoundException(@RequestParam UUID id) {
         return ResponseEntity.ok(new ParkingSpotGet(parkingSpotService.findByIdOrThrowNotFoundException(id)));
     }
 
     @GetMapping(params = "parkingSpotNumber")
     public ResponseEntity<ParkingSpotGet> findByParkingSpotNumber(@RequestParam String parkingSpotNumber) {
         return ResponseEntity.ok(new ParkingSpotGet(parkingSpotService.findByParkingSpotNumberOrThrowNotFoundException(parkingSpotNumber)));
+    }
+
+    @GetMapping
+    ResponseEntity<Page<ParkingSpotGet>> findAllPageable(Pageable pageable) {
+        return ResponseEntity.ok(parkingSpotService.findAllPageable(pageable));
     }
 
     @DeleteMapping(params = "id")
