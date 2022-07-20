@@ -45,4 +45,10 @@ public class ParkingSpotController {
     public ResponseEntity<ParkingSpotGet> findByParkingSpotNumber(@RequestParam String parkingSpotNumber) {
         return ResponseEntity.ok(new ParkingSpotGet(parkingSpotService.findByParkingSpotNumberOrThrowNotFoundException(parkingSpotNumber)));
     }
+
+    @DeleteMapping(params = "id")
+    public ResponseEntity<Void> deleteById(@RequestParam UUID id) {
+        parkingSpotService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

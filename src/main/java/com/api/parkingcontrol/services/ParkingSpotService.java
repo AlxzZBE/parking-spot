@@ -10,4 +10,5 @@ public interface ParkingSpotService {
     ParkingSpot findByIdOrThrowNotFoundException(UUID id);
     ParkingSpot findByParkingSpotNumberOrThrowNotFoundException(String parkingSpotNumber);
     void addCarInTheParkingSpotByLicensePlate(String parkingSpotNumber, String licensePlate);
+    void deleteById(UUID id);
 }

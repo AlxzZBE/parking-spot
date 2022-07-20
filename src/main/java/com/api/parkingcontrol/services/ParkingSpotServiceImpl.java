@@ -65,4 +65,11 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
         possibleParkingSpot.setAvailable(false);
         parkingSpotRepository.save(possibleParkingSpot);
     }
+
+    @Override
+    public void deleteById(UUID id) {
+        ParkingSpot possibleParkingSpot = findByIdOrThrowNotFoundException(id);
+        possibleParkingSpot.getCar().setParkingSpot(null);
+        parkingSpotRepository.deleteById(id);
+    }
 }
