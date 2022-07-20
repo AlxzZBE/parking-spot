@@ -57,4 +57,11 @@ public class ParkingSpotController {
         parkingSpotService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping(params = "id")
+    public ResponseEntity<Void> updateById(@RequestParam UUID id,
+                                           @RequestBody @Valid ParkingSpotPostRequestBody parkingSpotPostRequestBody) {
+        parkingSpotService.updateById(id, parkingSpotPostRequestBody);
+        return ResponseEntity.noContent().build();
+    }
 }

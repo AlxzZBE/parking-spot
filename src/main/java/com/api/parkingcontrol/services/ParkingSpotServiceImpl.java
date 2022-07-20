@@ -5,6 +5,7 @@ import com.api.parkingcontrol.domain.ParkingSpot;
 import com.api.parkingcontrol.exceptions.AlreadyExistsException;
 import com.api.parkingcontrol.exceptions.NotFoundException;
 import com.api.parkingcontrol.repositories.ParkingSpotRepository;
+import com.api.parkingcontrol.requests.ParkingSpotPostRequestBody;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -85,5 +86,23 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
             possibleParkingSpot.setAvailable(true);
             parkingSpotRepository.save(possibleParkingSpot);
         }
+    }
+
+    @Override
+    @Transactional
+    public void updateById(UUID id, ParkingSpotPostRequestBody parkingSpotPostRequestBody) {
+        ParkingSpot possibleParkingSpot = findByIdOrThrowNotFoundException(id);
+        if (parkingSpotRepository.existsByParkingSpotNumber(parkingSpotPostRequestBody.getParkingSpotNumber())) {
+            throw new AlreadyExistsException("Already Exists a ParkingSpot with ParkingSpotNumber `%s`"
+                    .formatted(parkingSpotPostRequestBody.getParkingSpotNumber()));
+        }
+        if (parkingSpotRepository.existsByApartmentAndBlock(parkingSpotPostRequestBody.getApartment(), parkingSpotPostRequestBody.getBlock())) {
+            throw new AlreadyExistsException("Already Exists a ParkingSpot registered for apartment `%s` and block `%s`"
+                    .formatted(parkingSpotPostRequestBody.getApartment(), parkingSpotPostRequestBody.getBlock()));
+        }
+        possibleParkingSpot.setParkingSpotNumber(parkingSpotPostRequestBody.getParkingSpotNumber());
+        possibleParkingSpot.setApartment(parkingSpotPostRequestBody.getApartment());
+        possibleParkingSpot.setBlock(parkingSpotPostRequestBody.getBlock());
+        parkingSpotRepository.save(possibleParkingSpot);
     }
 }
