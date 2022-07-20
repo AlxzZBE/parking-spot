@@ -48,6 +48,7 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     }
 
     @Override
+    @Transactional
     public void addCarInTheParkingSpotByLicensePlate(String parkingSpotNumber, String licensePlate) {
         ParkingSpot possibleParkingSpot = findByParkingSpotNumberOrThrowNotFoundException(parkingSpotNumber);
         Car possibleCar = carService.findByLicensePlateOrThrowNotFoundException(licensePlate);
@@ -67,6 +68,7 @@ public class ParkingSpotServiceImpl implements ParkingSpotService {
     }
 
     @Override
+    @Transactional
     public void deleteById(UUID id) {
         ParkingSpot possibleParkingSpot = findByIdOrThrowNotFoundException(id);
         possibleParkingSpot.getCar().setParkingSpot(null);
