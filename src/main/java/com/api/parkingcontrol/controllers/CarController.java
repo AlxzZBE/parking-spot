@@ -3,6 +3,8 @@ package com.api.parkingcontrol.controllers;
 import com.api.parkingcontrol.requests.CarGet;
 import com.api.parkingcontrol.requests.CarPostRequestBody;
 import com.api.parkingcontrol.services.CarService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -36,5 +38,10 @@ public class CarController {
     @GetMapping(params = "licensePlate")
     public ResponseEntity<CarGet> findByLicensePlateOrThrowNotFoundException(@RequestParam String licensePlate) {
         return ResponseEntity.ok(new CarGet(carService.findByLicensePlateOrThrowNotFoundException(licensePlate)));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<CarGet>> findAllPageable(Pageable pageable) {
+        return ResponseEntity.ok(carService.findAllPageable(pageable).map(CarGet::new));
     }
 }

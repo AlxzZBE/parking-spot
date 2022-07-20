@@ -4,6 +4,8 @@ import com.api.parkingcontrol.domain.Car;
 import com.api.parkingcontrol.exceptions.AlreadyExistsException;
 import com.api.parkingcontrol.exceptions.NotFoundException;
 import com.api.parkingcontrol.repositories.CarRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -39,5 +41,10 @@ public class CarServiceImpl implements CarService {
     public Car findByLicensePlateOrThrowNotFoundException(String licensePlate) {
         return carRepository.findByLicensePlate(licensePlate)
                 .orElseThrow(() -> new NotFoundException("Not Found Car with licensePlate `%s`".formatted(licensePlate)));
+    }
+
+    @Override
+    public Page<Car> findAllPageable(Pageable pageable) {
+        return carRepository.findAll(pageable);
     }
 }
