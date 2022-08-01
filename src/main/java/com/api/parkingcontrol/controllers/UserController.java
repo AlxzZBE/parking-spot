@@ -1,5 +1,7 @@
 package com.api.parkingcontrol.controllers;
 
+import com.api.parkingcontrol.requests.ParkingSpotGet;
+import com.api.parkingcontrol.requests.UserGet;
 import com.api.parkingcontrol.requests.UserPostRequestBody;
 import com.api.parkingcontrol.services.UserService;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +27,10 @@ public class UserController {
         UUID userSavedId = userService.save(userPostRequestBody.newUser());
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().queryParam("id", userSavedId).build().toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping(params = "id")
+    public ResponseEntity<UserGet> findByIdOrThrowNotFoundException(@RequestParam UUID id) {
+        return ResponseEntity.ok(new UserGet(userService.findByIdOrThrowNotFoundException(id)));
     }
 }
