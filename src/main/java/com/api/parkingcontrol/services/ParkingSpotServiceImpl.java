@@ -5,7 +5,6 @@ import com.api.parkingcontrol.domain.ParkingSpot;
 import com.api.parkingcontrol.exceptions.AlreadyExistsException;
 import com.api.parkingcontrol.exceptions.NotFoundException;
 import com.api.parkingcontrol.repositories.ParkingSpotRepository;
-import com.api.parkingcontrol.requests.ParkingSpotGet;
 import com.api.parkingcontrol.requests.ParkingSpotPostRequestBody;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
