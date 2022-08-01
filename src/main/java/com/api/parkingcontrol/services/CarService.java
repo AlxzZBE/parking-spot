@@ -13,4 +13,5 @@ public interface CarService {
     Car findByIdOrThrowNotFoundException(UUID id);
     Car findByLicensePlateOrThrowNotFoundException(String licensePlate);
     Page<Car> findAllPageable(Pageable pageable);
+    void deleteById(UUID id);
 }

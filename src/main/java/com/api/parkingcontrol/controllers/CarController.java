@@ -44,4 +44,10 @@ public class CarController {
     public ResponseEntity<Page<CarGet>> findAllPageable(Pageable pageable) {
         return ResponseEntity.ok(carService.findAllPageable(pageable).map(CarGet::new));
     }
+
+    @DeleteMapping(params = "id")
+    public ResponseEntity<Void> deleteById(@RequestParam UUID id) {
+        carService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

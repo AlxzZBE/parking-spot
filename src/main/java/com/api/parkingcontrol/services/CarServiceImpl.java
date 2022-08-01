@@ -47,4 +47,13 @@ public class CarServiceImpl implements CarService {
     public Page<Car> findAllPageable(Pageable pageable) {
         return carRepository.findAll(pageable);
     }
+
+    @Override
+    @Transactional
+    public void deleteById(UUID id) {
+        Car possibleCar = findByIdOrThrowNotFoundException(id);
+        if (possibleCar.getParkingSpot() != null)
+            possibleCar.getParkingSpot().setCar(null);
+        carRepository.deleteById(id);
+    }
 }
